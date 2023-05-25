@@ -1,0 +1,22 @@
+# This builds a zip archive w/the Lambda function code
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+
+  pre_build:
+    commands:
+      - RESOLVED_SOURCE_VERSION=${CODEBUILD_RESOLVED_SOURCE_VERSION:-$RESOLVED_SOURCE_VERSION_OVERRIDE}
+
+  build:
+    commands:
+      - mvn clean install -DskipTests
+      - cd kafka-connect-s3/target/components/packages/confluentinc-kafka-connect-s3-10.5.1-SNAPSHOT
+      - tar cvzf aha-s3-sink-plugin.tar.gz confluentinc-kafka-connect-s3-10.5.1-SNAPSHOT
+
+artifacts:
+  name: build-server-$ENVIRONMENT-$RESOLVED_SOURCE_VERSION.zip
+  files:
+    - kafka-connect-s3/target/components/packages/confluentinc-kafka-connect-s3-10.5.1-SNAPSHOT/confluentinc-kafka-connect-s3-10.5.1-SNAPSHOT.tar.gz

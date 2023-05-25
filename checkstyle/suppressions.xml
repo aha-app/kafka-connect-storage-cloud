@@ -21,4 +21,10 @@
       files="(TopicPartitionWriter).java"
     />
 
+    <suppress
+      checks="RegexpHeaderCheck"
+      files="(FieldAndDatePartitioner).java"
+    />
+
+
 </suppressions>
